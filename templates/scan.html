@@ -1,0 +1,7 @@
+{% for scan in scans %}
+    <tr>
+        <td class="col-xs-1 col-md-1"><a href="/scans/{{scan["name"]|e}}" data-title="Scans of {{scanner.model|e}}" data-toggle="lightbox" data-parent="" data-gallery="remoteload">{{scan["name"]|e}}</a></td><!--<img src="/scans/">-->
+        <td class="col-xs-1 col-md-1">{{scan["ctime"]|e}}</td>
+        <td class="col-xs-1 col-md-1">{{scan["size"]|e|filesizeformat}}</td>
+    </tr>
+{% endfor %}

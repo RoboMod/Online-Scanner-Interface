@@ -56,5 +56,11 @@ target/
 # VirtualEnv
 venv/
 
+# Bower Components
+static/js/
+
 # temporal Files
 *.*~
+
+# Project specific
+scans/
