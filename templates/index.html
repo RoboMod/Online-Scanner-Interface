@@ -1,0 +1,25 @@
+{% extends "main.html" %}
+
+{% block title %}
+{{super()}} - Welcome
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Welcome to Online-Scanner-Interface</h1>
+            <p>Access your scanner via responsive &amp; mobile webpage</p>
+            <p><a class="btn btn-primary btn-lg" href="/scanners" role="button">Scanners <span class="badge">{{scanners|length}}</span></a></p>
+            <!--<p>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Features</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                    </div>
+                </div>
+            </p>-->
+        </div>
+    </div>
+{% endblock %}

@@ -45,73 +45,74 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ scanner.model|e }}</h1>
+    </div>
 
-<div class="page-header">
-    <h1>{{ scanner.model|e }}</h1>
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Options</h3>
-    </div>
-    <div class="panel-body">
-        <form class="form-horizontal" id="scan_parameters">
-            <div class="form-group">
-                <label for="inputBrigthness" class="control-label col-xs-2">Brigthness</label>
-                <div class="col-xs-10">
-                    <input type="number" name="brightness" min="{{ scanner.options['brightness'].constraint[0] }}" max="{{ scanner.options['brightness'].constraint[1] }}" step="1" value="{{ scanner.options['brightness'].value }}" class="form-control" id="inputEmail">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputResolution" class="control-label col-xs-2">Resolution</label>
-                <div class="col-xs-10">
-                    <select name="resolution" id="inputResolution">
-                        {% for res in scanner.options['resolution'].constraint %}
-                        <option value="{{ res }}" {% if res == scanner.options['resolution'].value %}selected{% endif %}>{{ res }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputMode" class="control-label col-xs-2">Mode</label>
-                <div class="col-xs-10">
-                    <select name="mode" id="inputMode">
-                        {% for m in scanner.options['mode'].constraint %}
-                        <option value="{{ m }}" {% if m == scanner.options['mode'].value %}selected{% endif %}>{{ m }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </form>
-    </div> 
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Actions</h3>
-    </div>
-    <div class="panel-body">
-        <input type="hidden" id="model" value="{{ scanner.model|e }}"></input>
-        <button class="btn btn-default" id="simplescan" onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('simple_scan', ['{{scanner.model|e}}', 0, par]);">Simple scan</button>
-        <button class="btn btn-default" id="multiplescan" onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('simple_scan', ['{{scanner.model|e}}', 1, par]);">Multiple scan</button>
-    </div>
-</div>
-{% if scans %}
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Scans</h3>
+            <h3 class="panel-title">Options</h3>
         </div>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Size</th>
-                </tr>
-            </thead>
-            <tbody id="scans_tbody">
-                {% include "scan.html" with context %}
-            </tbody>
-        </table>
+        <div class="panel-body">
+            <form class="form-horizontal" id="scan_parameters">
+                <div class="form-group">
+                    <label for="inputBrigthness" class="control-label col-xs-2">Brigthness</label>
+                    <div class="col-xs-10">
+                        <input type="number" name="brightness" min="{{ scanner.options['brightness'].constraint[0] }}" max="{{ scanner.options['brightness'].constraint[1] }}" step="1" value="{{ scanner.options['brightness'].value }}" class="form-control" id="inputEmail">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputResolution" class="control-label col-xs-2">Resolution</label>
+                    <div class="col-xs-10">
+                        <select name="resolution" id="inputResolution">
+                            {% for res in scanner.options['resolution'].constraint %}
+                            <option value="{{ res }}" {% if res == scanner.options['resolution'].value %}selected{% endif %}>{{ res }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputMode" class="control-label col-xs-2">Mode</label>
+                    <div class="col-xs-10">
+                        <select name="mode" id="inputMode">
+                            {% for m in scanner.options['mode'].constraint %}
+                            <option value="{{ m }}" {% if m == scanner.options['mode'].value %}selected{% endif %}>{{ m }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </form> 
+        </div> 
     </div>
-{% endif %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Actions</h3>
+        </div>
+        <div class="panel-body">
+            <input type="hidden" id="model" value="{{ scanner.model|e }}"></input>
+            <button class="btn btn-default" id="simplescan" onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('simple_scan', ['{{scanner.model|e}}', 0, par]);">Simple scan</button>
+            <button class="btn btn-default" id="multiplescan" onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('simple_scan', ['{{scanner.model|e}}', 1, par]);">Multiple scan</button>
+        </div>
+    </div>
+    {% if scans %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Scans</h3>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Size</th>
+                    </tr>
+                </thead>
+                <tbody id="scans_tbody">
+                    {% include "scan.html" with context %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

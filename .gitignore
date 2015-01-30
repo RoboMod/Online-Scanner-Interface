@@ -64,3 +64,4 @@ static/js/
 
 # Project specific
 scans/
+devices.dump

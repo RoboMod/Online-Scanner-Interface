@@ -1,17 +1,26 @@
 {% extends "main.html" %}
 
 {% block content %}
-<div class="jumbotron">
-    <h1>Hello, world!</h1>
-    {% for scanner in scanners %}
-        <a class="btn btn-default" href="/scanner/{{ scanner.model|e }}">{{ scanner.model|e }}</a>
-        {{ scanner.id|e }}
+<div class="container">
+    <div class="page-header">
+        <h2>Scanners overview</h2>
+    </div>
+    
+    {% if scanners %}
+        <div class="list-group">
+        {% for scanner in scanners %}
+            <a class="list-group-item" href="/scanner/{{ scanner.model|e }}">
+                <h4 class="list-group-item-heading">{{ scanner.model|e }}</h4>
+                <p class="list-group-item-text"><span class="badge">{{scans[scanner.model]|length}}</span> Scans</p>
+            </a>
+        {% endfor %}
+        </div>
     {% else %}
     <div class="alert alert-danger" role="alert">
         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         <span class="sr-only">Error:</span>
         No scanners found!
     </div>
-    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}

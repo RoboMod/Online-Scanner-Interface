@@ -20,6 +20,12 @@ flask_sijax.Sijax(app)
 
 def getScanners():
     devices = pyinsane.get_devices()
+    # load pickle devices if no one connect (only for debugging)
+    if len(devices) == 0:
+        import pickle
+        f = open('devices.dump', 'rb')
+        devices = pickle.load(f)
+        f.close()
     return devices
 
 def getScanner(scanners, model):
@@ -40,8 +46,7 @@ def getScans(model):
 
 @app.route('/')
 def index():
-    return render_template('main.html')
-    #return redirect(url_for('scanners'))
+    return render_template('index.html', scanners=getScanners())
     
 @app.route('/scans/<path:filename>')
 def scans(filename):
@@ -49,7 +54,12 @@ def scans(filename):
 
 @app.route('/scanners/')
 def scanners():
-    return render_template('scanners.html', scanners=getScanners())
+    devices = getScanners()
+    scans = {}
+    for device in devices:
+        scans[device.model] = getScans(device.model)
+        
+    return render_template('scanners.html', scanners=devices, scans=scans)
 
 @flask_sijax.route(app, '/scanner/<model>')
 def scanner(model):
