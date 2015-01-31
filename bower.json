@@ -24,9 +24,12 @@
     "tests"
   ],
   "dependencies": {
-    "ekko-lightbox": "3.2.0"
+    "ekko-lightbox": "3.2.0",
+    "seiyria-bootstrap-slider": "4.4.1",
+    "bootstrap-select": "1.6.3"
   },
   "ignoredDependencies": [
-    "bootstrap"
+    "bootstrap",
+    "jquery"
   ]   
 }

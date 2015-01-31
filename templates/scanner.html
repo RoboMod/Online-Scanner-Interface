@@ -6,7 +6,9 @@
 
 {% block styles %}
 {{super()}}
-<link href="/static/js/ekko-lightbox/dist/ekko-lightbox.css" rel="stylesheet">
+<link href="/static/js/ekko-lightbox/dist/ekko-lightbox.min.css" rel="stylesheet">
+<link href="/static/js/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+<link href="/static/js/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block scripts %}
@@ -18,7 +20,9 @@
 <script type="text/javascript">
     {{ g.sijax.get_js()|safe }}
 </script>
-<script src="/static/js/ekko-lightbox/dist/ekko-lightbox.js"></script>
+<script type="text/javascript" src="/static/js/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+<script type="text/javascript" src="/static/js/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(
@@ -39,6 +43,12 @@
                     }
                 });
             });
+            
+            // decorate slider
+            $('#brightness').slider({tooltip: 'always'});
+            
+            // decorate selects
+            $('select').selectpicker();
         }
     );
 </script>
@@ -57,14 +67,17 @@
         <div class="panel-body">
             <form class="form-horizontal" id="scan_parameters">
                 <div class="form-group">
-                    <label for="inputBrigthness" class="control-label col-xs-2">Brigthness</label>
-                    <div class="col-xs-10">
-                        <input type="number" name="brightness" min="{{ scanner.options['brightness'].constraint[0] }}" max="{{ scanner.options['brightness'].constraint[1] }}" step="1" value="{{ scanner.options['brightness'].value }}" class="form-control" id="inputEmail">
+                    <label for="inputBrigthness" class="control-label col-sm-2">Brigthness</label>
+                    <div class="col-sm-10">
+                        {{ scanner.options['brightness'].constraint[0] }}
+                        <input class="form-control" id="brightness" name="brightness" data-slider-id='brigthness' type="text" data-slider-min="{{ scanner.options['brightness'].constraint[0] }}"
+                                                                 data-slider-max="{{ scanner.options['brightness'].constraint[1] }}" data-slider-step="1" data-slider-value="{{ scanner.options['brightness'].value }}"/>
+                        {{ scanner.options['brightness'].constraint[1] }}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputResolution" class="control-label col-xs-2">Resolution</label>
-                    <div class="col-xs-10">
+                    <label for="inputResolution" class="control-label col-sm-2">Resolution</label>
+                    <div class="col-sm-10">
                         <select name="resolution" id="inputResolution">
                             {% for res in scanner.options['resolution'].constraint %}
                             <option value="{{ res }}" {% if res == scanner.options['resolution'].value %}selected{% endif %}>{{ res }}</option>
@@ -73,8 +86,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputMode" class="control-label col-xs-2">Mode</label>
-                    <div class="col-xs-10">
+                    <label for="inputMode" class="control-label col-sm-2">Mode</label>
+                    <div class="col-sm-10">
                         <select name="mode" id="inputMode">
                             {% for m in scanner.options['mode'].constraint %}
                             <option value="{{ m }}" {% if m == scanner.options['mode'].value %}selected{% endif %}>{{ m }}</option>
@@ -82,8 +95,8 @@
                         </select>
                     </div>
                 </div>
-            </form> 
-        </div> 
+            </form>
+        </div>
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -91,8 +104,14 @@
         </div>
         <div class="panel-body">
             <input type="hidden" id="model" value="{{ scanner.model|e }}"></input>
-            <button class="btn btn-default" id="simplescan" onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('simple_scan', ['{{scanner.model|e}}', 0, par]);">Simple scan</button>
-            <button class="btn btn-default" id="multiplescan" onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('simple_scan', ['{{scanner.model|e}}', 1, par]);">Multiple scan</button>
+            <button class="btn btn-default" id="simplescan" 
+                    onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('scan', ['{{scanner.model|e}}', 0, par]);">
+                Simple scan
+            </button>
+            <button class="btn btn-default {{ 'disabled' if not scanner.options['source'].constraint|hasValue("ADF") }}" id="multiplescan" 
+                    onclick="var par = Sijax.getFormValues('#scan_parameters'); Sijax.request('scan', ['{{scanner.model|e}}', 1, par]);">
+                Multiple scan
+            </button>
         </div>
     </div>
     {% if scans %}
