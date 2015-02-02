@@ -6,7 +6,7 @@
     "RoboMod <mod.andy@gmx.de>"
   ],
   "description": "Simple webinterface controlling your scanner from the LAN, e.g. connected to a Raspberry Pi",
-  "main": "online-scanner-interface.py",
+  "main": "run.py",
   "keywords": [
     "scanner",
     "web",
